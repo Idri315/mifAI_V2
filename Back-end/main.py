@@ -3,6 +3,11 @@ from flask import Flask, render_template, request,jsonify
 
 app= Flask(__name__)
 
+#Jauges
+jauge_confiance = 50
+jauge_affection = 50
+
+
 #Database pour stocker ce que le robot à appris
 knowledge_base = []
 
@@ -15,18 +20,29 @@ def home():
 #Route pour communiquer avec Fai
 @app.route('/send_message', methods=['POST'])
 def send_message():
-    user_message = request.json.get('message')
+    global jauge_confiance, jauge_affection
 
-    #Etape 1 : stocker le message de l'utilisateur
-    knowledge_base.append(user_message)
+    user_message = request.json.get('message')
     print(f"{user_message}")
 
-    #Etape 2 : Réponse du bot
-    #Pour l'instant il répond de manière très simple : 
-    chatbot_response = "INtéressant. Peux-tu développer ce point ?"
+    longueur_message = len(user_message)
 
-    #Etape 3 : Renvoyer la réponse en format JSON
-    return jsonify({"response" : chatbot_response})
+    #à changer après
+    if longueur_message > 50:
+        jauge_affection+= random.randint(1, 5) #Augmentation aléatoire de l'affection
+        jauge_confiance += random.randint(1, 3) # Augmentation aléatoire de la confiance
+    else : 
+        jauge_confiance -= random.randint(1? 3) # Baisse si l'explication est trop courte
+
+    jauge_confiance= max(0, min(100, jauge_confiance))
+    jauge_affection = mac(0, min(100, jauge_affection))
+
+    print(f"Confiance : {jauge_confiance}, Affection : {jauge_affection}")
+
+    chatbot_response = "Intéressant. Peux tu développer ce point ?"
+
+    return jsonify({"response" : chatbot_response, "confiance" : jauge_confiance, "affection" : jauge_confiance})
+
 
 if __name__ == '__main__':
     app.run(debug = True)
