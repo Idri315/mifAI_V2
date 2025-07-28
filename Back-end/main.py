@@ -33,10 +33,10 @@ def send_message():
         jauge_affection+= random.randint(1, 5) #Augmentation aléatoire de l'affection
         jauge_confiance += random.randint(1, 3) # Augmentation aléatoire de la confiance
     else : 
-        jauge_confiance -= random.randint(1? 3) # Baisse si l'explication est trop courte
+        jauge_confiance -= random.randint(1, 3) # Baisse si l'explication est trop courte
 
     jauge_confiance= max(0, min(100, jauge_confiance))
-    jauge_affection = mac(0, min(100, jauge_affection))
+    jauge_affection = max(0, min(100, jauge_affection))
 
     print(f"Confiance : {jauge_confiance}, Affection : {jauge_affection}")
 
